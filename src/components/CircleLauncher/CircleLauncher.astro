@@ -4,8 +4,10 @@ import './CircleLauncher.css';
 
 <div id="circle-launcher-wrapper">
     <div id="circle-launcher">
-        <button>X</button>
+        <button id="circle-launcher-close">X</button>
         <nav id="circle-launcher-items">
+            <button></button>
+            <button></button>
             <button></button>
             <button></button>
             <button></button>
@@ -19,24 +21,67 @@ import './CircleLauncher.css';
 </div>
 
 <script>
+    const wrapper = document.getElementById("circle-launcher-wrapper");
+    const closeButton = document.getElementById("circle-launcher-close")
     const navItems = document.getElementById("circle-launcher-items")?.children;
-    
-    if (navItems != null) {
-        const radius = 85;
-        const radian = Math.PI / 180;
-        const gap = 360 / navItems.length;
+    const timeoutIds: number[] = [];
 
-        for (let i = 0; i < navItems.length; i++) {
-            const item = navItems[i] as HTMLElement;
+    function close() {
+        console.log(timeoutIds);
 
-            console.log(radius, "* sin(", radian, "* (", i , "*", gap, "))");
+        timeoutIds.forEach(id => {
+            clearTimeout(id);
+        });
+        timeoutIds.length = 0;
 
-            console.log((radian * (i * gap)));
-            console.log((radius * Math.sin(radian * (i * gap))).toFixed(4));
-            console.log((radius * Math.cos(radian * (i * gap))).toFixed(4));
+        if (wrapper != null) {
+            wrapper.style.opacity = "0";
+        }
 
-            item.style.top = (radius * Math.sin(radian * (i * gap))).toFixed(4) + "px";
-            item.style.left = (radius * Math.cos(radian * (i * gap))).toFixed(4) + "px";
+        if (navItems != null) {
+            for (let i = 0; i < navItems.length; i++) {
+                const item = navItems[i] as HTMLElement;
+
+                item.style.opacity = "0";
+            }
         }
     }
+
+    function open(posX: number, posY: number) {
+        if (wrapper != null) {
+            wrapper.style.opacity = "1";
+
+            wrapper.style.left = posX.toString() + "px";
+            wrapper.style.top = posY.toString() + "px";
+        }
+
+        if (navItems != null) {
+            const radius = 160;
+            const radian = Math.PI / 180;
+            const gap = 360 / navItems.length;
+
+            for (let i = 0; i < navItems.length; i++) {
+                const item = navItems[i] as HTMLElement;
+
+                item.style.top = (radius * Math.cos(radian * (i * gap)) * -1).toFixed(4) + "px";
+                item.style.left = (radius * Math.sin(radian * (i * gap)) * -1).toFixed(4) + "px";
+            
+                const timeoutId = setTimeout(() => {
+                    item.style.opacity = "1";
+                }, 25 * (navItems.length - i));
+
+                timeoutIds.push(timeoutId);
+            }
+        }
+    }
+
+    document.addEventListener("contextmenu", (e) => {
+        e.preventDefault();
+        
+        open(e.clientX, e.clientY);
+    });
+
+    closeButton?.addEventListener("click", (e) => {
+        close();
+    });
 </script>

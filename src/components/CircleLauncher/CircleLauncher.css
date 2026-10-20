@@ -1,8 +1,7 @@
 #circle-launcher-wrapper {
     position: absolute;
-    left: 50%;
-    top: 50%;
     transform: translate(-50%, -50%);
+    opacity: 0;
 }
 
 #circle-launcher {
@@ -14,12 +13,17 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    width: 125px;
+    height: 125px;
+    border-radius: 100%;
 }
 
 #circle-launcher > nav > button {
+    opacity: 0;
     position: absolute;
-    width: 30px;
-    height: 30px;
-    border-radius: 100px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
     transform: translate(-50%, -50%);
+    transition: 0.5s linear opacity;
 }
