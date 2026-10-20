@@ -1,0 +1,42 @@
+---
+import './CircleLauncher.css';
+---
+
+<div id="circle-launcher-wrapper">
+    <div id="circle-launcher">
+        <button>X</button>
+        <nav id="circle-launcher-items">
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+            <button></button>
+        </nav>
+    </div>
+</div>
+
+<script>
+    const navItems = document.getElementById("circle-launcher-items")?.children;
+    
+    if (navItems != null) {
+        const radius = 85;
+        const radian = Math.PI / 180;
+        const gap = 360 / navItems.length;
+
+        for (let i = 0; i < navItems.length; i++) {
+            const item = navItems[i] as HTMLElement;
+
+            console.log(radius, "* sin(", radian, "* (", i , "*", gap, "))");
+
+            console.log((radian * (i * gap)));
+            console.log((radius * Math.sin(radian * (i * gap))).toFixed(4));
+            console.log((radius * Math.cos(radian * (i * gap))).toFixed(4));
+
+            item.style.top = (radius * Math.sin(radian * (i * gap))).toFixed(4) + "px";
+            item.style.left = (radius * Math.cos(radian * (i * gap))).toFixed(4) + "px";
+        }
+    }
+</script>

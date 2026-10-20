@@ -1,0 +1,25 @@
+#circle-launcher-wrapper {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#circle-launcher {
+    position: relative;
+}
+
+#circle-launcher > button {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#circle-launcher > nav > button {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 100px;
+    transform: translate(-50%, -50%);
+}
