@@ -17,6 +17,7 @@ export function makeDraggable() {
         win.addEventListener("mousedown", (e) => {
             if (e.altKey) {
                 if (e.button == 0) {
+                    win.style.cursor = "grab";
                     const onMove = (e: MouseEvent) => {
                         win.style.left = `${parseInt(window.getComputedStyle(win).left) + e.movementX}px`;
                         win.style.top = `${parseInt(window.getComputedStyle(win).top) + e.movementY}px`;
@@ -26,6 +27,7 @@ export function makeDraggable() {
 
                     document.addEventListener("mouseup", () => {
                         document.removeEventListener("mousemove", onMove);
+                        win.style.cursor = "pointer";
                     }, { once: true });
                 }
             }
@@ -45,6 +47,8 @@ export function makeDraggable() {
             let y = 0;
                         
             if (e.altKey) {
+                // TODO: Resize cursors
+
                 const onMove = (e: MouseEvent) => {
                     if (!moving) {
                         x = e.x;
