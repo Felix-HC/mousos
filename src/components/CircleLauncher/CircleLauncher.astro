@@ -1,6 +1,5 @@
 ---
 import './CircleLauncher.css';
-import Item from './components/Item.astro';
 ---
 
 <div id="circle-launcher-wrapper">
@@ -60,6 +59,7 @@ import Item from './components/Item.astro';
         active = false;
 
         if (wrapper != null) {
+            wrapper.style.display = "none";
             wrapper.style.opacity = "0";
         }
 
@@ -72,6 +72,7 @@ import Item from './components/Item.astro';
         searchBar.value = "";
 
         if (wrapper != null) {
+            wrapper.style.display = "block";
             wrapper.style.opacity = "1";
 
             wrapper.style.left = posX.toString() + "px";
@@ -147,8 +148,10 @@ import Item from './components/Item.astro';
 
     document.addEventListener("contextmenu", (e) => {
         e.preventDefault();
-        
-        open(e.clientX, e.clientY);
+
+        if (e.ctrlKey) {
+            open(e.clientX, e.clientY);
+        }
     });
 
     closeButton?.addEventListener("click", () => {

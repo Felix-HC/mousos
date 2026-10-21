@@ -9,3 +9,9 @@
     height: 100%;
     object-fit: cover;
 }
+
+.draggable {
+    position: absolute;
+    top: 0;
+    left: 0;
+}

@@ -5,7 +5,14 @@
 }
 
 #wallpaper {
+    position: absolute;
     z-index: 0;
+}
+
+#desktop {
+    position: relative;
+    z-index: 1;
+    padding: 10px;
 }
 
 #body {

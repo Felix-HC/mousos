@@ -1,9 +1,21 @@
 ---
+import Bar from '../Bar/Bar.astro'
 import CircleLauncher from '../CircleLauncher/CircleLauncher.astro'
 import './Desktop.css'
 ---
 
+<img id="wallpaper" src="/assets/wallpapers/wallpaper.webp">
 <div id="desktop">
-    <img id="wallpaper" src="/assets/wallpapers/wallpaper.webp">
     <CircleLauncher />
+    <Bar />
+
+    <div style="height: 100px; width: 100px; left: 100px; top: 100px; background: white;" class="draggable">
+        <img src="/assets/cat.png" height="100%" width="100%">
+    </div>
 </div>
+
+<script>
+    import { makeDraggable } from "../../scripts/windows";
+
+    makeDraggable();
+</script>

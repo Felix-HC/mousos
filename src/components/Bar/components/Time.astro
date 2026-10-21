@@ -1,0 +1,16 @@
+---
+
+---
+
+<div class="bar-component bar-component-time">
+    <span></span>
+</div>
+
+<script>
+    setInterval(() => {
+        [...document.getElementsByClassName("bar-component-time")].forEach(e => {
+            const date = new Date(Date.now());
+            e.getElementsByTagName("span")[0].innerText = `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+        });
+    }, 1000);
+</script>

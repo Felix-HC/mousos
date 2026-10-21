@@ -1,0 +1,15 @@
+#bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    font-size: 1.2rem;
+
+    & > div {
+        color: white;
+        background: #222;
+        padding: 8px 16px;
+        border-radius: 4px;
+        user-select: none;
+    }
+}
