@@ -27,7 +27,7 @@ export function makeDraggable() {
 
                     document.addEventListener("mouseup", () => {
                         document.removeEventListener("mousemove", onMove);
-                        win.style.cursor = "pointer";
+                        win.style.cursor = "default";
                     }, { once: true });
                 }
             }
