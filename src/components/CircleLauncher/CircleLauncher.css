@@ -6,24 +6,80 @@
 
 #circle-launcher {
     position: relative;
+
+    & > input {
+        position: absolute;
+        top: -75px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        height: 2.5rem;
+        width: 100%;
+        text-align: center;
+        background: none;
+        border: none;
+        outline: none;
+        font-size: 1.7rem;
+        color: white;
+    }
+
+    & > button {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 125px;
+        height: 125px;
+        border-radius: 100%;
+    }
+
+    & > nav {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+
+        & > button {
+            opacity: 0;
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: 0.5s linear opacity;
+        }
+    }
 }
 
-#circle-launcher > button {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 125px;
-    height: 125px;
-    border-radius: 100%;
+#circle-launcher-close {
+    border: none;
+
+    & > img {
+        filter: invert(.8);
+        width: 40%;
+    }
 }
 
-#circle-launcher > nav > button {
-    opacity: 0;
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    transition: 0.5s linear opacity;
+.circle-launcher-entry {
+    border: none;
+
+    & > span {
+        display: none;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        height: fit-content;
+        width: fit-content;
+        font-size: 1.2rem;
+        color: white;
+    }
+
+    & > img {
+        filter: invert(.8);
+    }
+
+    &:hover {
+        & > span {
+            display: inline;
+        }
+    }
 }

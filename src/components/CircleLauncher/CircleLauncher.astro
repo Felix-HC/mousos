@@ -1,53 +1,76 @@
 ---
 import './CircleLauncher.css';
+import Item from './components/Item.astro';
 ---
 
 <div id="circle-launcher-wrapper">
     <div id="circle-launcher">
-        <button id="circle-launcher-close">X</button>
+        <input id="circle-launcher-search" type="text">
+        <button id="circle-launcher-close"><img src="/assets/icons/close.svg"></button>
         <nav id="circle-launcher-items">
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
-            <button></button>
         </nav>
     </div>
 </div>
 
 <script>
+    let active = false;
+
+    class Item {
+        name: string;
+        icon: string;
+        exec: string;
+
+        constructor(name: string, icon: string, exec: string) {
+            this.name = name;
+            this.icon = icon;
+            this.exec = exec;
+        }
+
+        getHTML() {
+            const button = document.createElement("button");
+            button.classList.add("circle-launcher-entry");
+
+            const span = document.createElement("span");
+            span.innerText = this.name;
+            button.appendChild(span);
+
+            const img = document.createElement("img");
+            img.src = `/assets/icons/${this.icon}`;
+            button.append(img);
+
+            return button;
+        }
+    }
+
+    const navItems = [
+        new Item("Settings", "build.svg", ""),
+        new Item("Notes", "description.svg", ""),
+        new Item("Music", "library_music.svg", ""),
+        new Item("Store", "store.svg", ""),
+        new Item("Calendar", "today.svg", "")
+    ];
+
     const wrapper = document.getElementById("circle-launcher-wrapper");
-    const closeButton = document.getElementById("circle-launcher-close")
-    const navItems = document.getElementById("circle-launcher-items")?.children;
-    const timeoutIds: number[] = [];
+    const circleLauncher = document.getElementById("circle-launcher");
+    const closeButton = document.getElementById("circle-launcher-close");
+    const searchBar = document.getElementById("circle-launcher-search") as HTMLInputElement;
+    const itemsEl = circleLauncher?.getElementsByTagName("nav")[0];
 
     function close() {
-        console.log(timeoutIds);
-
-        timeoutIds.forEach(id => {
-            clearTimeout(id);
-        });
-        timeoutIds.length = 0;
+        active = false;
 
         if (wrapper != null) {
             wrapper.style.opacity = "0";
         }
 
-        if (navItems != null) {
-            for (let i = 0; i < navItems.length; i++) {
-                const item = navItems[i] as HTMLElement;
-
-                item.style.opacity = "0";
-            }
+        if (itemsEl != null) {
+            itemsEl.innerHTML = "";
         }
     }
 
     function open(posX: number, posY: number) {
+        searchBar.value = "";
+
         if (wrapper != null) {
             wrapper.style.opacity = "1";
 
@@ -55,22 +78,69 @@ import './CircleLauncher.css';
             wrapper.style.top = posY.toString() + "px";
         }
 
-        if (navItems != null) {
+        update();
+    }
+
+    function update(items: Item[] = [...navItems]) {
+        if (itemsEl != null) {
+            itemsEl.innerHTML = "";
+        }
+
+        if (items != null) {
             const radius = 160;
             const radian = Math.PI / 180;
-            const gap = 360 / navItems.length;
+            const gap = 36;
 
-            for (let i = 0; i < navItems.length; i++) {
-                const item = navItems[i] as HTMLElement;
+            items.forEach(item => {
+                itemsEl?.appendChild(item.getHTML());
+            });
 
-                item.style.top = (radius * Math.cos(radian * (i * gap)) * -1).toFixed(4) + "px";
-                item.style.left = (radius * Math.sin(radian * (i * gap)) * -1).toFixed(4) + "px";
-            
-                const timeoutId = setTimeout(() => {
-                    item.style.opacity = "1";
-                }, 25 * (navItems.length - i));
+            if (itemsEl != null) {
+                for (let i = 0; i < itemsEl.children.length; i++) {
+                    const item = itemsEl.children[i] as HTMLElement;
 
-                timeoutIds.push(timeoutId);
+                    const top = (radius * Math.cos(radian * (i * gap)) * -1);
+                    const left = (radius * Math.sin(radian * (i * gap)));
+
+                    item.style.top = top.toFixed(4) + "px";
+                    item.style.left = left.toFixed(4) + "px";
+
+                    const name = item.getElementsByTagName("span")[0] as HTMLElement;
+                    const nameDistance = 20;
+                    if (i * gap == 0) {
+                        name.style.top = `-${nameDistance}px`;
+                    } else if (i * gap == 180) {
+                        name.style.top = (item.clientHeight + nameDistance) + "px";
+                    } else if (i * gap < 180) {
+                        name.style.left = (item.clientWidth + nameDistance) + "px";
+                        name.style.transform = "translateY(-50%)";
+                    } else if (i * gap > 180) {
+                        name.style.left = `-${item.clientWidth + nameDistance}px`;
+                        name.style.transform = "translateY(-50%)";
+                    }
+
+                    if (i * gap > 180) {
+                        name.style.textAlign = "right";
+                    };
+                
+                    if (!active) {
+                        setTimeout(() => {
+                            item.style.opacity = "1";
+                        }, 25 * i);
+                    } else {
+                        item.style.opacity = "1";
+                    }
+                }
+                active = true;
+
+                searchBar.focus();
+            }
+
+            // Height of launcher
+            if (circleLauncher != null && closeButton != null && (itemsEl as HTMLElement).children.length > 0) {
+                const size = (radius + (itemsEl as HTMLElement).children[0].clientHeight / 2) * 2;
+                circleLauncher.style.height = `${size}px`
+                circleLauncher.style.width = `${size}px`;
             }
         }
     }
@@ -81,7 +151,15 @@ import './CircleLauncher.css';
         open(e.clientX, e.clientY);
     });
 
-    closeButton?.addEventListener("click", (e) => {
+    closeButton?.addEventListener("click", () => {
         close();
+    });
+
+    searchBar?.addEventListener("input", () => {
+        if (searchBar.value == "") {
+            update()
+        } else {
+            update([...navItems].filter((e) => e.name.toLowerCase().includes(searchBar.value.toLowerCase())));
+        }
     });
 </script>
