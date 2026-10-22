@@ -7,10 +7,15 @@
 </div>
 
 <script>
-    setInterval(() => {
+    const setTime = () => {
         [...document.getElementsByClassName("bar-component-time")].forEach(e => {
             const date = new Date(Date.now());
             e.getElementsByTagName("span")[0].innerText = `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
         });
+    }
+
+    setTime();
+    setInterval(() => {
+        setTime();
     }, 1000);
 </script>
