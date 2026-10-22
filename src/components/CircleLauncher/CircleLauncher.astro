@@ -12,16 +12,25 @@ import './CircleLauncher.css';
 </div>
 
 <script>
+    import { openProgram } from "../../scripts/programHandler";
+
+    enum ItemType {
+        APPLICATION,
+        ACTION
+    }
+
     let active = false;
 
     class Item {
         name: string;
         icon: string;
         exec: string;
+        type: ItemType;
 
-        constructor(name: string, icon: string, exec: string) {
+        constructor(name: string, icon: string, exec: string, type: ItemType = ItemType.APPLICATION) {
             this.name = name;
             this.icon = icon;
+            this.type = type;
             this.exec = exec;
         }
 
@@ -37,16 +46,16 @@ import './CircleLauncher.css';
             img.src = `/assets/icons/${this.icon}`;
             button.append(img);
 
+            if (this.type == ItemType.APPLICATION) {
+                button.setAttribute("data-exec", this.exec);
+            }
+
             return button;
         }
     }
 
     const navItems = [
-        new Item("Settings", "build.svg", ""),
-        new Item("Notes", "description.svg", ""),
-        new Item("Music", "library_music.svg", ""),
-        new Item("Store", "store.svg", ""),
-        new Item("Calendar", "today.svg", "")
+        new Item("Cat Viewer", "build.svg", "cat-viewer"),
     ];
 
     const wrapper = document.getElementById("circle-launcher-wrapper");
@@ -99,6 +108,18 @@ import './CircleLauncher.css';
             if (itemsEl != null) {
                 for (let i = 0; i < itemsEl.children.length; i++) {
                     const item = itemsEl.children[i] as HTMLElement;
+                    const exec = item.getAttribute("data-exec");
+
+                    item.addEventListener("click", () => {
+                        if (exec != null) {
+                            const top = parseInt(wrapper?.style.top as string);
+                            const left = parseInt(wrapper?.style.left as string);
+
+                            openProgram(exec, top, left);
+                        }
+
+                        close();
+                    });
 
                     const top = (radius * Math.cos(radian * (i * gap)) * -1);
                     const left = (radius * Math.sin(radian * (i * gap)));
