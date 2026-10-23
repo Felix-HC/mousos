@@ -27,12 +27,14 @@ import './CircleLauncher.css';
         icon: string;
         exec: string;
         type: ItemType;
+        invert: boolean;
 
-        constructor(name: string, icon: string, exec: string, type: ItemType = ItemType.APPLICATION) {
+        constructor(name: string, icon: string, exec: string, type: ItemType = ItemType.APPLICATION, invert: boolean = true) {
             this.name = name;
             this.icon = icon;
             this.type = type;
             this.exec = exec;
+            this.invert = invert;
         }
 
         getHTML() {
@@ -45,7 +47,7 @@ import './CircleLauncher.css';
 
             const img = document.createElement("img");
             img.src = `/assets/icons/${this.icon}`;
-            if (this.icon.endsWith(".svg")) {
+            if (this.icon.endsWith(".svg") && this.invert) {
                 img.style.filter = "invert(0.8)";
             }
             button.append(img);
@@ -64,8 +66,8 @@ import './CircleLauncher.css';
     });
 
     const actionItems: Item[] = [];
-    actionItems.push(new Item("Minimize", "bundle.png", "minimize", ItemType.ACTION));
-    actionItems.push(new Item("Close", "mallet.png", "close", ItemType.ACTION));
+    actionItems.push(new Item("Minimize", "bundle.png", "minimize", ItemType.ACTION, false));
+    actionItems.push(new Item("Close", "mallet.svg", "close", ItemType.ACTION, false),);
 
     const wrapper = document.getElementById("circle-launcher-wrapper");
     const circleLauncher = document.getElementById("circle-launcher");

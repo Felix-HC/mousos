@@ -1,5 +1,6 @@
 import { CatViewer } from "../programs/CatViewer/CatViewer";
 import { Counter } from "../programs/Counter/Counter";
+import { disableCustomCursor, enableCustomCursor, setCustomCursor } from "./customCursor";
 import type { Program } from "./programs";
 
 let maxPID = 0;
@@ -35,7 +36,8 @@ export function run(name: string, top: number, left: number) {
 }
 
 function handleCloseAction() {
-    document.body.style.cursor = "url('/assets/icons/mallet.png'), auto";
+    const customCursor = setCustomCursor("/assets/icons/mallet.svg", 0, 15, 96);
+    enableCustomCursor();
 
     let firstClick = true;
     const onClick = (e : MouseEvent) => {
@@ -44,25 +46,13 @@ function handleCloseAction() {
             return;
         }
 
-        let target: HTMLElement | undefined = undefined;
+        customCursor.style.rotate = "-45deg";
 
-        if ((e.target as HTMLElement).classList.contains("program")) {
-            target = (e.target as HTMLElement);
-        } else {
-            let parent = (e.target as HTMLElement)?.parentElement;
-            while (parent != undefined) {
-                if (parent.classList.contains("program")) {
-                    target = parent;
-                    break;
-                } else if (parent.id == "desktop") {
-                    break;
-                } else {
-                    parent = parent.parentElement;
-                }
-            }
-        }
+        const clickedEl = document.elementsFromPoint(e.x, e.y).find((e) => e.classList.contains("program"));
 
-        if (target != undefined) {
+        if (clickedEl != undefined) {
+            const target = clickedEl as HTMLElement;
+
             target.style.transition = "1s cubic-bezier(0.18, 0.66, 0.05, 1) top";
             target.style.top = "150%";
 
@@ -71,12 +61,13 @@ function handleCloseAction() {
 
                 if (target.classList.contains("cat-viewer")) {
                     console.log("you killed the cat... /silly")
-            }
-            }, 2000);
-            
+                }
+            }, 1000);
         }
 
-        document.body.style.cursor = "default";
+        setTimeout(() => {
+            disableCustomCursor();
+        }, 250);
         document.removeEventListener("click", onClick);
     }
 
