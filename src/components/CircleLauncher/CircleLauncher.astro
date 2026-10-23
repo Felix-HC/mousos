@@ -12,7 +12,8 @@ import './CircleLauncher.css';
 </div>
 
 <script>
-    import { openProgram } from "../../scripts/programHandler";
+    import { programs } from "../../scripts/programHandler";
+    import { run } from "../../scripts/programHandler";
 
     enum ItemType {
         APPLICATION,
@@ -44,20 +45,27 @@ import './CircleLauncher.css';
 
             const img = document.createElement("img");
             img.src = `/assets/icons/${this.icon}`;
+            if (this.icon.endsWith(".svg")) {
+                img.style.filter = "invert(0.8)";
+            }
             button.append(img);
 
-            if (this.type == ItemType.APPLICATION) {
-                button.setAttribute("data-exec", this.exec);
-            }
+            button.setAttribute("data-exec", this.exec);
 
             return button;
         }
     }
 
-    const navItems = [
-        new Item("Cat Viewer", "pets.svg", "cat-viewer"),
-        new Item("Counter", "exposure_plus_1.svg", "counter"),
-    ];
+    const navItems: Item[] = [];
+    programs.forEach(program => {
+        if (program.prettyName != undefined && program.icon != undefined, program.name != undefined) {
+            navItems.push(new Item(program.prettyName, program.icon, program.name));
+        }
+    });
+
+    const actionItems: Item[] = [];
+    actionItems.push(new Item("Minimize", "bundle.png", "minimize", ItemType.ACTION));
+    actionItems.push(new Item("Close", "mallet.png", "close", ItemType.ACTION));
 
     const wrapper = document.getElementById("circle-launcher-wrapper");
     const circleLauncher = document.getElementById("circle-launcher");
@@ -102,13 +110,27 @@ import './CircleLauncher.css';
             const radian = Math.PI / 180;
             const gap = 36;
 
+            items = items.slice(0, 6);
+
             items.forEach(item => {
                 itemsEl?.appendChild(item.getHTML());
             });
 
+            for (let i = 0; i < (6 - items.length + 1); i++) {
+                const seperator = document.createElement("div");
+                seperator.classList.add("seperator");
+                itemsEl?.appendChild(seperator);
+            }
+            
+            actionItems.forEach(item => {
+                itemsEl?.appendChild(item.getHTML());
+            })
+
             if (itemsEl != null) {
                 for (let i = 0; i < itemsEl.children.length; i++) {
                     const item = itemsEl.children[i] as HTMLElement;
+                    if (item.classList.contains("seperator")) continue;
+
                     const exec = item.getAttribute("data-exec");
 
                     item.addEventListener("click", () => {
@@ -116,7 +138,7 @@ import './CircleLauncher.css';
                             const top = parseInt(wrapper?.style.top as string);
                             const left = parseInt(wrapper?.style.left as string);
 
-                            openProgram(exec, top, left);
+                            run(exec, top, left);
                         }
 
                         close();
@@ -154,6 +176,7 @@ import './CircleLauncher.css';
                         item.style.opacity = "1";
                     }
                 }
+
                 active = true;
 
                 searchBar.focus();
@@ -184,7 +207,10 @@ import './CircleLauncher.css';
         if (searchBar.value == "") {
             update()
         } else {
-            update([...navItems].filter((e) => e.name.toLowerCase().includes(searchBar.value.toLowerCase())));
+            update([...navItems].filter((e) => {
+                if (e == undefined) return false;
+                e.name.toLowerCase().includes(searchBar.value.toLowerCase());
+            }));
         }
     });
 </script>

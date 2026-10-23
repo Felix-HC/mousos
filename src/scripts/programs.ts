@@ -13,7 +13,7 @@ export abstract class Program {
 
         this.pid = pid;
         this.name = name;
-        this.prettyName = name;
+        this.prettyName = prettyName;
         this.html = html;
     }
 

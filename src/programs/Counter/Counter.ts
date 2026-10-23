@@ -2,6 +2,9 @@ import { Program } from "../../scripts/programs";
 
 export class Counter extends Program {
     static count = 0;
+    static prettyName = "Counter";
+    static name = "counter";
+    static icon = "exposure_plus_1.svg";
 
     constructor(pid: number) {
         Counter.count++;

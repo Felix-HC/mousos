@@ -2,6 +2,9 @@ import { Program } from "../../scripts/programs";
 
 export class CatViewer extends Program {
     static count = 0;
+    static name = "cat-viewer";
+    static prettyName = "Cat Viewer :3"
+    static icon = "pets.svg";
 
     constructor(pid: number) {
         CatViewer.count++;
