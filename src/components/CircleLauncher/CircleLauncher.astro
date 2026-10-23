@@ -66,7 +66,7 @@ import './CircleLauncher.css';
     });
 
     const actionItems: Item[] = [];
-    actionItems.push(new Item("Minimize", "bundle.png", "minimize", ItemType.ACTION, false));
+    // actionItems.push(new Item("Minimize", "bundle.png", "minimize", ItemType.ACTION, false));
     actionItems.push(new Item("Close", "mallet.svg", "close", ItemType.ACTION, false),);
 
     const wrapper = document.getElementById("circle-launcher-wrapper");
@@ -156,19 +156,19 @@ import './CircleLauncher.css';
                     const nameDistance = 20;
                     if (i * gap == 0) {
                         name.style.top = `-${nameDistance}px`;
+                        name.style.textAlign = "center";
                     } else if (i * gap == 180) {
                         name.style.top = (item.clientHeight + nameDistance) + "px";
+                        name.style.textAlign = "center";
                     } else if (i * gap < 180) {
                         name.style.left = (item.clientWidth + nameDistance) + "px";
                         name.style.transform = "translateY(-50%)";
+                        name.style.textAlign = "left";
                     } else if (i * gap > 180) {
                         name.style.left = `-${item.clientWidth + nameDistance}px`;
                         name.style.transform = "translateY(-50%)";
+                        name.style.textAlign = "left";
                     }
-
-                    if (i * gap > 180) {
-                        name.style.textAlign = "right";
-                    };
                 
                     if (!active) {
                         setTimeout(() => {

@@ -69,7 +69,7 @@
         top: 50%;
         transform: translate(-50%, -50%);
         height: fit-content;
-        width: fit-content;
+        width: 200%;
         font-size: 1.2rem;
         color: white;
     }

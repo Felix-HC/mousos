@@ -5,7 +5,7 @@ import type { Program } from "./programs";
 
 let maxPID = 0;
 
-export const programs: any[] = [CatViewer, Counter, Counter, Counter, Counter, Counter, Counter, Counter, Counter, Counter, Counter, Counter, Counter, Counter, Counter];
+export const programs: any[] = [CatViewer, Counter];
 
 export function run(name: string, top: number, left: number) {
     let program: Program | undefined;
