@@ -4,8 +4,9 @@ Mousos is a web os with the focus of creating a unique UX experience centered ar
 
 ## Controls
 
-| App Launcher  | CTRL + RIGHT CLICK                |
+| Action        | Key                               |
 |---------------|-----------------------------------|
+| App Launcher  | CTRL + RIGHT CLICK                |
 | Drag Window   | ALT + LEFT CLICK (hold and move)  |
 | Resize Window | ALT + RIGHT CLICK (hold and move) |
 
