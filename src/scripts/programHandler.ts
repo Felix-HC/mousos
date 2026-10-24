@@ -36,7 +36,7 @@ export function run(name: string, top: number, left: number) {
 }
 
 function handleCloseAction() {
-    const customCursor = setCustomCursor("/assets/icons/mallet.svg", 0, 15, 96);
+    const customCursor = setCustomCursor("/mousos/assets/icons/mallet.svg", 0, 15, 96);
     enableCustomCursor();
 
     let firstClick = true;
